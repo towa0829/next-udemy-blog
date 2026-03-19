@@ -13,6 +13,7 @@ export async function saveImage(file: File): Promise<string | null> {
 
 
   }catch (error) {
+    console.error('Error saving image:', error);
     return null;
   }
  }

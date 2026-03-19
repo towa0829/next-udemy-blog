@@ -9,9 +9,10 @@ import "highlight.js/styles/github.css"; // コードハイライト用のスタ
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createPost } from "@/lib/actions/createPost";
+import { updatePost } from "@/lib/actions/updatePost";
 import Image from "next/image";
 import React from 'react'
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 type EditPostFormProps = {
   post: {
@@ -32,7 +33,7 @@ export default function EditPostForm({post}: EditPostFormProps) {
   const [imagePreview, setImagePreview] = useState(post.topImage);
 
 
-  const [state, formAction] = useActionState(createPost, {
+  const [state, formAction] = useActionState(updatePost, {
       success: false, errors: {}
     })
 
@@ -106,6 +107,16 @@ export default function EditPostForm({post}: EditPostFormProps) {
             >{content}</ReactMarkdown>
           </div>
         )}
+        <RadioGroup defaultValue={published.toString()} name="published" onValueChange={(value)=>setPublished(value ==='true')}>
+          <div className="flex items-center gap-3">
+            <RadioGroupItem value="true" id="published-one" />
+            <Label htmlFor="published-one">公開</Label>
+          </div>
+          <div className="flex items-center gap-3">
+            <RadioGroupItem value="false" id="published-two" />
+            <Label htmlFor="published-two">非公開</Label>
+          </div>
+        </RadioGroup>
         <Button type="submit" className="bg-blue-500 tex-white px-4 py-2 rounded">更新する</Button>
         <input type="hidden" name="postId" value={post.id} />
         <input type="hidden" name="oldImageUrl" value={post.topImage || ''} />
